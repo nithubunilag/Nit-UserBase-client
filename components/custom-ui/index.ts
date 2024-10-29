@@ -4,6 +4,5 @@ export * from "./modal";
 export * from "./pageLoader";
 export * from "./popOver";
 export * from "./search";
-export * from "./privateRoute";
 export * from "./spinner";
 export * from "./timeline";

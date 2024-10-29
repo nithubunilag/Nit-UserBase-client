@@ -6,10 +6,12 @@ const ROUTES = {
     auth: {
         LOGIN: "/auth/login",
         SIGNUP: "/auth/signup",
-        MAIN: "/auth",
+        FORGOT_PASSWORD: "/auth/forgot-password",
+        RESET_PASSWORD: "/auth/reset-password",
     },
-    home: {
+    dashboard: {
         HOME: "/",
+        EMPLOYEES: "/employees",
     },
 };
 

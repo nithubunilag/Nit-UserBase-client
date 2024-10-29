@@ -1,4 +1,4 @@
-import { Button, IBaseModalProps, ModalLayout } from "@/components";
+import { Button, IBaseModalProps, ModalLayout } from "@/components/custom-ui";
 
 export const EmailVerificationModal = (props: IBaseModalProps) => {
     const { modalTrigger } = props;

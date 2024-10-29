@@ -18,9 +18,9 @@ class AuthService {
         return await axiosInstance.post(`${this.authUrl}/register`, data);
     }
 
-    public async forgot_password_request(email: string) {
-        return await axiosInstance.get(`${this.authUrl}/forgot-password`, {
-            params: { email },
+    public async forgot_password_request(emailAddress: string) {
+        return await axiosInstance.post(`/auth/forgot-password`, {
+            emailAddress,
         });
     }
 
