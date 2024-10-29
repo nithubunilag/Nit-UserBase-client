@@ -1,0 +1,60 @@
+.auth_sidebar {
+  height: 100%;
+  background: #4f5dc1;
+  position: relative;
+  overflow: hidden;
+
+  .auth_ball {
+    position: absolute;
+    transition: all 500ms ease-in-out;
+
+    &-1 {
+      top: 5%;
+      left: -10%;
+    }
+
+    &-2 {
+      top: -1%;
+      right: -5%;
+    }
+
+    &-3 {
+      bottom: -2%;
+      right: -2%;
+    }
+
+    &-4 {
+      bottom: -2%;
+      left: -3%;
+    }
+  }
+
+  .auth_sidebar_text_container {
+    span {
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+}
+
+.blink_animation {
+  
+  animation: blink 1s linear infinite alternate;
+}
+
+@keyframes blink {
+  0% {
+    border-color: #ffffffb3;
+  }
+  25% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #ffffffb3;
+  }
+  75% {
+    border-color: transparent;
+  }
+  100% {
+    border-color: #ffffffb3;
+  }
+}

@@ -1,0 +1,92 @@
+import { makeToast } from "@/libs/react-toast";
+import { authService, ILoginRequest } from "@/services/auth";
+import { IApiError } from "@/services/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useCallback, useMemo, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { FiEye, FiEyeOff } from "react-icons/fi";
+import { useMutation } from "react-query";
+import { z } from "zod";
+
+export const useLogin = () => {
+    const router = useRouter();
+
+    const [secure, setSecure] = useState(true);
+
+    const {
+        mutateAsync: loginAccount,
+        error,
+        isError,
+        isLoading,
+    } = useMutation({
+        mutationFn: (data: ILoginRequest) => authService.login(data),
+
+        onSuccess: () => {
+            router.push("/");
+        },
+    });
+
+    const LoginSchema = z.object({
+        emailAddress: z.string().email({ message: "Please Input a Valid Email" }),
+        password: z
+            .string()
+            .min(3, { message: "Password Cannot be less than 3 Characters" })
+            .max(20, { message: "Password must be lesser than 20 characters" }),
+    });
+
+    type LoginSchemaType = z.infer<typeof LoginSchema>;
+
+    const loginForm = useForm<LoginSchemaType>({
+        resolver: zodResolver(LoginSchema),
+
+        defaultValues: {
+            emailAddress: "",
+            password: "",
+        },
+    });
+
+    const onSubmit: SubmitHandler<LoginSchemaType> = async (data) => {
+        try {
+            await loginAccount(data);
+
+            router.push("/");
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const loggingInError = useCallback(() => {
+        const form_error = Object.keys(loginForm.formState.errors).length > 0 ? "All required field must be complete" : null;
+
+        const base_api_error = error as IApiError;
+
+        const api_error = isError ? base_api_error.response?.data.message : null;
+
+        const error_message = form_error || api_error;
+
+        if (error_message) {
+            makeToast({
+                message: error_message,
+                type: "error",
+                id: "error_message",
+            });
+        }
+    }, [error, isError, loginForm.formState.errors]);
+
+    const passwordIcon = useMemo(() => {
+        return (
+            <div className="my-auto pe-4" onClick={() => setSecure(!secure)}>
+                {secure ? <FiEye className="text-secondary cursor-pointer" /> : <FiEyeOff className="text-secondary cursor-pointer" />}
+            </div>
+        );
+    }, [secure, setSecure]);
+
+    return {
+        loginForm,
+        onSubmit,
+        logging_in: isLoading,
+        passwordIcon,
+        passwordVisible: secure,
+    };
+};

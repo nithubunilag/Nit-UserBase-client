@@ -1,0 +1,18 @@
+.atmua-input {
+    span {
+        display: inline-block;
+    }
+
+    span.disabled {
+        color: #B7B7B7;
+    }
+
+    input.has-error {
+        border:  1px solid #EF233C;
+    }
+
+    input.disabled {
+        background-color: #F9F9F9;
+        cursor: not-allowed;
+    }
+}

@@ -1,0 +1,62 @@
+@mixin very-large-screen {
+    @media (min-width: 1200px) {
+        @content;
+    }
+}
+
+@mixin large-screen {
+    @media (min-width: 992px) {
+        @content;
+    }
+}
+
+@mixin medium-screen {
+    @media screen and (min-width: 768px) {
+        @content;
+    }
+}
+
+@mixin small-screen {
+    @media screen and (min-width: 576px) {
+        @content;
+    }
+}
+
+// Color Palette
+$themes: (
+    light: (primary: #50870E,
+        text-color: #1C1C1C,
+        light-text-color:#595E5C,
+        danger:#870E14,
+        warning-text:#DDA338,
+    ),
+    dark: (),
+);
+
+
+@mixin themify($themes) {
+
+    @each $theme,
+    $map in $themes {
+        .theme-#{$theme} & {
+            $theme-map: (
+                ) !global;
+
+            @each $key,
+            $submap in $map {
+                $value: map-get(map-get($themes, $theme), "#{$key}"
+                );
+            $theme-map: map-merge($theme-map,
+                    ($key: $value,
+                    )) !global;
+        }
+
+        @content;
+        $theme-map: null !global;
+    }
+}
+}
+
+@function themed($key) {
+    @return map-get($theme-map, $key);
+}
