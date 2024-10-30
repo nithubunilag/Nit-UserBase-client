@@ -57,7 +57,7 @@ const Login = () => {
                     </Link>
                 </div>
 
-                <Button variant="contained" title="Log in" className="w-full" type="submit" loading={logging_in} />
+                <Button variant="contained" label="Log in" className="w-full" type="submit" loading={logging_in} />
 
                 <div className="mt-3">
                     <span className="mt-3 inline-block w-full text-center text-sm font-medium text-[#A1A1A1] md:text-base">

@@ -18,7 +18,7 @@ const Settings = () => {
                         </p>
                     </div>
                     <Button
-                        title={"Change"}
+                        label={"Change"}
                         variant="contained"
                         onClick={() => router.push("/settings/login-password")}
                     />
@@ -30,7 +30,7 @@ const Settings = () => {
                         <p className="text-base font-normal text-[#646464]">Disabled</p>
                     </div>
                     <Button
-                        title={"Enable"}
+                        label={"Enable"}
                         variant="contained"
                         onClick={() => router.push("/settings/two-step-authentication")}
                     />

@@ -1,10 +1,12 @@
 "use client";
 
+import { authService } from "@/services/auth";
+import { CACHE_KEYS } from "@/utils/constants";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { MdOutlineArrowDropDown } from "react-icons/md";
-import { PopOver } from "..";
+import { useQuery } from "react-query";
+import { Spinner } from "..";
 import SidebarItems from "./sidebarItems";
 
 export const Sidebar = () => {
@@ -19,7 +21,7 @@ export const Sidebar = () => {
             }`}
             aria-label="Sidebar"
         >
-            <div className="bg-secondary relative flex min-h-0 flex-1 flex-col">
+            <div className="relative flex min-h-0 flex-1 flex-col bg-secondary">
                 <div className={`h-full overflow-y-scroll pt-[120px]  text-white ${sidebarOpened ? "block" : "hidden"}`}>
                     <div>
                         <div className="mx-auto flex items-center gap-4 pl-8">
@@ -31,20 +33,11 @@ export const Sidebar = () => {
                                 className="rounded-md"
                             />
 
-                            <PopOver location="bottom" onTrigger={(state) => setPopItemOpened(state)} content={<StaffSidebarPopoverContent />}>
-                                <div>
-                                    <h2 className="flex items-center font-semibold text-white">
-                                        Admin
-                                        <MdOutlineArrowDropDown
-                                            className={`text-2xl transition-all duration-300 ease-in-out ${
-                                                popItemOpened ? "rotate-180" : "rotate-0"
-                                            }`}
-                                        />
-                                    </h2>
+                            <div>
+                                <h2 className="flex items-center font-semibold text-white">Admin</h2>
 
-                                    <p className="text-sm text-[#BDBDBD]">Super Admin</p>
-                                </div>
-                            </PopOver>
+                                <p className="text-sm text-[#BDBDBD]">Super Admin</p>
+                            </div>
                         </div>
 
                         <h2 className="mb-4 ml-8 mt-8 text-sm font-medium">Main Menu</h2>
@@ -65,6 +58,15 @@ const StaffSidebarPopoverContent = ({ ...props }) => {
         router.push(route);
     };
 
+    const { isLoading: loggingOut, refetch } = useQuery({
+        queryKey: [CACHE_KEYS.LOG_OUT],
+        queryFn: authService.logout,
+        enabled: false,
+        onSuccess: () => {
+            router.push("/auth/login");
+        },
+    });
+
     return (
         <div className={`${props?.show ? " w-[160px] " : "w-0 "} overflow-hidden rounded-md bg-white transition-all duration-300 ease-in-out `}>
             <button
@@ -74,10 +76,10 @@ const StaffSidebarPopoverContent = ({ ...props }) => {
                 View profile
             </button>
             <button
-                onClick={() => handleButtonClick("#")}
-                className="w-full border-b border-b-[#CACACA]  py-3 pl-6 text-start text-[#797979] transition-all duration-300 ease-in-out hover:bg-[#c7c7c7]"
+                onClick={() => refetch()}
+                className="flex w-full items-center gap-3 border-b border-b-[#CACACA] py-3 pl-6 text-start text-[#797979] transition-all duration-300 ease-in-out hover:bg-[#c7c7c7]"
             >
-                Log Out
+                {loggingOut ? "Logging out..." : "Log Out"} {loggingOut && <Spinner />}
             </button>
         </div>
     );

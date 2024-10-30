@@ -3,6 +3,7 @@ import { CustomProvider } from "@/state_management";
 import type { Metadata } from "next";
 import "../styles/globals.css";
 
+
 export const metadata: Metadata = {
     title: "Nit Identity",
     description: "Nithub",

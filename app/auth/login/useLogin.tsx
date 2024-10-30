@@ -3,7 +3,7 @@ import { authService, ILoginRequest } from "@/services/auth";
 import { IApiError } from "@/services/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useMutation } from "react-query";
@@ -50,7 +50,7 @@ export const useLogin = () => {
         try {
             await loginAccount(data);
 
-            router.push("/");
+            router.push("/team");
         } catch (error) {
             console.log(error);
         }
@@ -77,10 +77,14 @@ export const useLogin = () => {
     const passwordIcon = useMemo(() => {
         return (
             <div className="my-auto pe-4" onClick={() => setSecure(!secure)}>
-                {secure ? <FiEye className="text-secondary cursor-pointer" /> : <FiEyeOff className="text-secondary cursor-pointer" />}
+                {secure ? <FiEye className="cursor-pointer text-secondary" /> : <FiEyeOff className="cursor-pointer text-secondary" />}
             </div>
         );
     }, [secure, setSecure]);
+
+    useEffect(() => {
+        loggingInError();
+    }, [loggingInError]);
 
     return {
         loginForm,

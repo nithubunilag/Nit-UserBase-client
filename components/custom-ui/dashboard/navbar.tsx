@@ -1,9 +1,9 @@
 "use client";
 
 import { useAppActions } from "@/hooks";
+import { NitdaLogo } from "@/public/icons";
 import { authService } from "@/services/auth";
-import { CACHE_KEYS, IMAGE_DIR } from "@/utils/constants";
-import Image from "next/image";
+import { CACHE_KEYS } from "@/utils/constants";
 import { useRouter } from "next/navigation";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useQuery } from "react-query";
@@ -24,19 +24,19 @@ export const Navbar = () => {
     });
 
     return (
-        <nav className="fixed z-10 h-[80px] w-full border-b border-[#CACACA] bg-[#F6F7FD]">
-            <div className="flex items-center justify-between px-3 py-2 lg:px-5 lg:pl-3 ">
+        <nav className="fixed z-10 flex h-[80px] w-full items-center justify-center border-b border-[#CACACA] bg-[#F6F7FD]">
+            <div className="mx-auto flex w-[95%] items-center justify-between ">
                 <button className="md:hidden" onClick={() => toggleSidebar()}>
                     <RxHamburgerMenu className="cursor-pointer text-2xl" />
                 </button>
 
-                <Image src={`${IMAGE_DIR}/atmua_logo.svg`} alt="logo" width={85} height={85} priority />
+                <NitdaLogo width={150} height={70} />
 
                 <Button
                     onClick={() => refetch()}
                     loading={loggingOut}
                     variant="outlined"
-                    title="Logout"
+                    label="Logout"
                     className="border-2 !py-2"
                     spanClassName="text-sm"
                 />

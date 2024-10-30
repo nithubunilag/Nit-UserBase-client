@@ -48,10 +48,10 @@ const AdminPermissions = ({ params }: { params: { id: string } }) => {
                         </button>
 
                         <PopOver location="bottom" trigger="click" content={<div>Hello</div>}>
-                            <Button variant="outlined" title="Disable" disabled />
+                            <Button variant="outlined" label="Disable" disabled />
                         </PopOver>
 
-                        <Button variant="contained" title="Add Permissions" />
+                        <Button variant="contained" label="Add Permissions" />
                     </div>
                 </TabList>
 

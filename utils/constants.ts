@@ -11,12 +11,19 @@ const ROUTES = {
     },
     dashboard: {
         HOME: "/",
-        EMPLOYEES: "/employees",
+        TEAM: "/team",
+        EMPLOYEES: "/team/employees",
+        DEPARTMENT: "/departments",
     },
 };
 
+const ACCESS_TOKEN_KEY = "accessToken";
+
 const CACHE_KEYS = {
     LOG_OUT: "LOG_OUT",
+    ALL_TEAM: "ALL_TEAM",
+    DEPARTMENT: "DEPARTMENT",
+    ROLE: "ROLE",
 };
 
-export { CACHE_KEYS, ICONS_DIR, IMAGE_DIR, ROUTES };
+export { ACCESS_TOKEN_KEY, CACHE_KEYS, ICONS_DIR, IMAGE_DIR, ROUTES };

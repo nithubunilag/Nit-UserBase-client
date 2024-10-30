@@ -143,8 +143,8 @@ const CreateAdmin = () => {
                 </div>
 
                 <div className="flex w-[40%] items-center gap-3 ">
-                    <Button title="Next" variant="contained" type="submit" className="w-full" />
-                    <Button title="Cancel" variant="outlined" className="w-full" />
+                    <Button label="Next" variant="contained" type="submit" className="w-full" />
+                    <Button label="Cancel" variant="outlined" className="w-full" />
                 </div>
             </form>
         </main>

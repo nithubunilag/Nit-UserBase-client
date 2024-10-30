@@ -15,23 +15,19 @@ export const useSearch = <T extends Record<string, any>, K extends keyof T>(prop
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchKeyword(e.target.value);
-        const searchKeyword = e.target.value;
-        const result: T[] = [];
+        const searchKeyword = e.target.value.toLowerCase();
+
         if (searchKeyword === "") {
             setState(resetState!);
             return;
-        } else {
-            initialState.map((item) => {
-                const currentItem = item[conditionKeyword]?.split("");
-                const searchKeywordArr = searchKeyword?.split("");
-
-                if (searchAlgorithm(currentItem, searchKeywordArr)) {
-                    result.push(item);
-                }
-            });
-
-            setState(result);
         }
+
+        const result = initialState.filter((item) => {
+            const currentItem = item[conditionKeyword]?.toString().toLowerCase();
+            return currentItem?.includes(searchKeyword);
+        });
+
+        setState(result);
     };
 
     const searchAlgorithm = (arr1: string[], searchedKeywordArr: string[]) => {

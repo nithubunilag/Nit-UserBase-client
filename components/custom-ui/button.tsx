@@ -7,13 +7,24 @@ type OptionalProps = {
 };
 
 type IButtonProps = {
-    title: string | React.ReactNode;
+    label: string | React.ReactNode ;
     variant: "outlined" | "contained" | "text";
 } & Partial<OptionalProps> &
     React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button: React.FC<IButtonProps> = (props) => {
-    const { disabled = false, onClick, variant = "contained", loading = false, title, type = "button", style, className, spanClassName, ...others } = props;
+    const {
+        disabled = false,
+        onClick,
+        variant = "contained",
+        loading = false,
+        label,
+        type = "button",
+        style,
+        className,
+        spanClassName,
+        ...others
+    } = props;
 
     return (
         <button
@@ -26,7 +37,7 @@ export const Button: React.FC<IButtonProps> = (props) => {
             {...others}
         >
             <span className={`flex items-center justify-center gap-4 space-x-3 ${spanClassName}`}>
-                {title}
+                {label}
                 {loading && (
                     <>
                         <Spinner />

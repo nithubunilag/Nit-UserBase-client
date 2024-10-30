@@ -29,6 +29,6 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
 }
 
-export const config = {
-    matcher: ["", ...AUTH_ROUTES, ...MAIN_ROUTES],
-};
+// export const config = {
+//     matcher: ["", ...AUTH_ROUTES, ...MAIN_ROUTES],
+// };

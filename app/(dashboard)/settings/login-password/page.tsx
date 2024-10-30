@@ -1,6 +1,6 @@
 "use client";
-import { Input } from "@/components/custom-ui/form";
 import { Button, Header } from "@/components/custom-ui";
+import { Input } from "@/components/custom-ui/form";
 import { useForm } from "react-hook-form";
 
 const LoginPassword = () => {
@@ -39,7 +39,7 @@ const LoginPassword = () => {
                 </div>
 
                 <div className="flex items-center gap-3 md:w-[30%] ">
-                    <Button title="Change Password" variant="contained" type="submit" className="w-full" />
+                    <Button label="Change Password" variant="contained" type="submit" className="w-full" />
                 </div>
             </form>
         </main>

@@ -3,7 +3,7 @@
 @tailwind utilities;
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,regular,500,600,700,800,300italic,italic,500italic,600italic,700italic,800italic);
 
-@import url(https://fonts.googleapis.com/css?family=Lato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic);
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 :root {
     /* Heading Fonts */
     --large-heading1: 3.75rem;
@@ -74,7 +74,6 @@ body {
 }
 
 a {
-    color: #4f5dc1;
     font-weight: 700;
     cursor: pointer;
     transition: 0.2s linear;
@@ -94,52 +93,6 @@ a:hover {
     display: none;
 }
 
-.custom-table th,
-.custom-table td {
-    padding: 22px;
-    text-align: start;
-    padding-left: 40px;
-}
-
-.custom-table td {
-    border-bottom: 1px solid #cacaca;
-    font-weight: 500;
-    font-size: 14px;
-    color: #646464;
-}
-
-.custom-table tr {
-    background: #ffffff;
-}
-
-.custom-table thead {
-    background: #f9f9f9;
-    margin-bottom: 10px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.04);
-
-    tr {
-        background: inherit;
-    }
-}
-
-.custom-table th {
-    color: #37449f;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-@media only screen and (max-width: 768px) {
-    .custom-table td {
-        border: none;
-        border-left: 1px solid #ccc;
-        position: relative;
-        padding: 12px;
-    }
-
-    .custom-table td:nth-of-type(3) {
-        text-align: center;
-    }
-}
 
 .react-tel-input .form-control {
     width: 100% !important;

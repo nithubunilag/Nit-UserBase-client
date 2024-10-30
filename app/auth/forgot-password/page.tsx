@@ -1,11 +1,11 @@
 "use client";
+import { ForgotPasswordModal } from "@/components/composite-ui/modals";
 import { Button } from "@/components/custom-ui";
 import { AuthHeader, SubHeader } from "@/components/custom-ui/auth";
 import { FormError, Input } from "@/components/custom-ui/form";
 import { NitdaLogo } from "@/public/icons";
 import Link from "next/link";
 import { useForgotPassword } from "./useForgotPassword";
-import { ForgotPasswordModal } from "@/components/composite-ui/modals";
 
 const ResetPassword = () => {
     const { form, onSubmit, error, loading, isSuccess } = useForgotPassword();
@@ -44,7 +44,7 @@ const ResetPassword = () => {
 
                 <FormError error={null} />
 
-                <Button variant="contained" title="Submit" type="submit" className="w-full" loading={loading} />
+                <Button variant="contained" label="Submit" type="submit" className="w-full" loading={loading} />
 
                 <div className="mt-3">
                     <span className="inline-block w-full text-center  text-sm font-medium text-[#A1A1A1]">

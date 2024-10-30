@@ -1,4 +1,3 @@
-import "animate.css";
 import Image from "next/image";
 
 interface ITimelineProps {

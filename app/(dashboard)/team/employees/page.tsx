@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { RefreshIcon } from "public/icons";
 import { CiSearch } from "react-icons/ci";
 
-const Admins = () => {
+const Employees = () => {
     const router = useRouter();
 
     const getStatus = (status: "enabled" | "disabled") => {
@@ -49,10 +49,10 @@ const Admins = () => {
                     </button>
 
                     <PopOver location="bottom" trigger="click" content={<div>Hello</div>}>
-                        <Button variant="outlined" title="Disable" disabled />
+                        <Button variant="outlined" label="Disable" disabled />
                     </PopOver>
 
-                    <Button variant="contained" title="Add Admins" onClick={() => router.push("/user/admins/create")} />
+                    <Button variant="contained" label="Add Admins" onClick={() => router.push("/user/admins/create")} />
                 </div>
             </div>
 
@@ -134,7 +134,7 @@ const Admins = () => {
     );
 };
 
-export default Admins;
+export default Employees;
 
 const adminsData = [
     {

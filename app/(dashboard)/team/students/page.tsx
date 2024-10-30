@@ -49,10 +49,10 @@ const Admins = () => {
                     </button>
 
                     <PopOver location="bottom" trigger="click" content={<div>Hello</div>}>
-                        <Button variant="outlined" title="Disable" disabled />
+                        <Button variant="outlined" label="Disable" disabled />
                     </PopOver>
 
-                    <Button variant="contained" title="Add Academic" onClick={() => router.push("/user/admins/create")} />
+                    <Button variant="contained" label="Add Academic" onClick={() => router.push("/user/admins/create")} />
                 </div>
             </div>
 

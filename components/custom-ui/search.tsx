@@ -18,16 +18,17 @@ export const Search = <T extends Record<string, any>, K extends keyof T>({
     });
 
     return (
-        <div className="relative flex w-full items-center gap-[0.5em] rounded-[10px] bg-[#f9f9f9] px-4 py-[0.6rem] transition-all duration-[0.5s] ease-[ease-in-out] md:w-[400px]">
-            <CiSearch />
+        <div className="focus-within:border-secondary group relative flex items-center gap-4 rounded-lg border border-[#DFDFDF] bg-transparent p-2 transition-all duration-300 ease-in-out md:min-w-[300px]">
+            <CiSearch className="group-focus-within:text-secondary text-3xl font-bold  text-[#DFDFDF] transition-all duration-300 ease-in-out" />
+
             <input
                 type="text"
-                className="placeholder:text-[rgb(#232d23, 60%)] relative w-full border-[none] px-[15px] py-0 text-sm text-primary transition-all duration-[0.5s] ease-[ease-in-out]"
+                className="text-secondary relative border-none bg-transparent text-sm outline-none placeholder:text-sm placeholder:text-[#A1A1A1]"
                 placeholder="Search ....."
                 value={searchKeyword}
                 onChange={handleSearch}
             />
-            <span className="ml-2.5 cursor-pointer" onClick={clearSearch}>
+            <span className="absolute right-4 ml-2.5 cursor-pointer" onClick={clearSearch}>
                 {searchKeyword && <AiOutlineClose />}
             </span>
         </div>

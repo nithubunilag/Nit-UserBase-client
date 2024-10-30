@@ -1,8 +1,10 @@
-"use client"
+"use client";
 import { usePathname, useRouter } from "next/navigation";
-import { AcademicIcon, AdminsIcon, DashboardIcon, MessageIcon, SettingsIcon, StaffsIcon, UserIcon } from "public/icons";
+import { AcademicIcon, AdminsIcon, DashboardIcon, SettingsIcon, StaffsIcon, UserIcon } from "public/icons";
 import React, { useState } from "react";
 import { SlArrowRight } from "react-icons/sl";
+import { FaHouseDamage } from "react-icons/fa";
+
 
 interface ISidebarItem {
     name: string;
@@ -41,6 +43,12 @@ const SidebarItems = () => {
             active: isItemActive(["user"]),
             subItems: [
                 {
+                    name: "All",
+                    icon: <StaffsIcon />,
+                    route: "/team",
+                    active: isItemActive(["", "team"], 1),
+                },
+                {
                     name: "Employees",
                     icon: <AdminsIcon />,
                     route: "/team/employees",
@@ -67,6 +75,12 @@ const SidebarItems = () => {
             ],
         },
         {
+            name: "Departments",
+            icon: <FaHouseDamage />,
+            route: "/departments",
+            active: isItemActive(["departments"]),
+        },
+        {
             name: "Settings",
             icon: <SettingsIcon />,
             route: "/settings",
@@ -86,7 +100,7 @@ const SidebarItems = () => {
 export default SidebarItems;
 
 const SidebarItem = ({ item, depth }: ISidebarItemProp) => {
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(item?.subItems?.some((subItem) => subItem.active) ? true : false);
 
     const router = useRouter();
 
@@ -97,6 +111,20 @@ const SidebarItem = ({ item, depth }: ISidebarItemProp) => {
 
         return router.push(item.route);
     };
+
+    const init = () => {
+        if (!item.subItems) return;
+
+        const anySubItemActive = item.subItems.some((subItem) => subItem.active);
+
+        if (anySubItemActive) {
+            setIsExpanded(true);
+        } else {
+            setIsExpanded(!isExpanded);
+        }
+    };
+
+    // init();
 
     const paddingLeft = depth * 35 + 32;
 
@@ -111,8 +139,9 @@ const SidebarItem = ({ item, depth }: ISidebarItemProp) => {
             >
                 <div className="flex items-center gap-2">
                     {React.cloneElement(item.icon, {
-                        baseColor: item.active ? "#fff" : undefined,
+                        basecolor: item.active ? "#fff" : undefined,
                         stroke: item.active ? "#fff" : undefined,
+                        className: `text-[#B1B1B1] ${item.active ? "text-white" : ""}`,
                     })}
 
                     <p className={`text-sm font-medium transition-all duration-300 ease-in-out ${item.active ? "text-white" : "text-[#B1B1B1]"}`}>

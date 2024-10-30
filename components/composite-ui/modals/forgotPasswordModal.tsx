@@ -15,7 +15,7 @@ export const ForgotPasswordModal = (props: IBaseModalProps) => {
                 <p className="mx-auto mb-5 text-center text-lg font-light text-[#4B4E61] md:w-[80%]">
                     A code to reset your password has been sent to your email address.
                 </p>
-                <Button title="Close" variant="contained" className="w-full" onClick={() => router.push("/auth/login")} />
+                <Button label="Close" variant="contained" className="w-full" onClick={() => router.push("/auth/login")} />
             </div>
         </ModalLayout>
     );

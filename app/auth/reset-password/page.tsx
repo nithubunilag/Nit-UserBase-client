@@ -1,16 +1,14 @@
 "use client";
 
-import { Button } from "@/components/custom-ui";
 import { ResetPasswordModal } from "@/components/composite-ui/modals";
+import { Button } from "@/components/custom-ui";
 import { AuthHeader, SubHeader } from "@/components/custom-ui/auth";
 import { FormError, Input } from "@/components/custom-ui/form";
-import { IMAGE_DIR } from "@/utils/constants";
-import Image from "next/image";
+import { NitdaLogo } from "@/public/icons";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useResetPassword } from "./useResetPassword";
-import { NitdaLogo } from "@/public/icons";
 
 const ResetPassword = () => {
     // State to manage password visibility
@@ -75,7 +73,7 @@ const ResetPassword = () => {
 
                 <FormError error={error()} />
 
-                <Button variant="contained" title="Submit" className="w-full" type="submit" loading={loading} />
+                <Button variant="contained" label="Submit" className="w-full" type="submit" loading={loading} />
 
                 <div className="mt-3">
                     <span className="inline-block w-full text-center  text-sm font-medium text-[#A1A1A1]">
