@@ -1,10 +1,13 @@
 "use client";
 
-import { Button } from "@/components/custom-ui";
+import { DropzoneModal } from "@/components/composite-ui/modals";
+import { Button, CSVViewer } from "@/components/custom-ui";
 import { Input, Select } from "@/components/custom-ui/form";
 import { FormSkeletonLoader } from "@/components/custom-ui/formSkeletonLoader";
+import { useCsvParser } from "@/hooks";
 import { getDropdownValue } from "@/utils";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Controller } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
@@ -27,6 +30,10 @@ const CreateTeamMember = () => {
 
     const router = useRouter();
 
+    const [importCsv, setImportCsv] = useState(false);
+
+    const { csvData, deleteCSV, handleFileUpload, csvDeleted } = useCsvParser();
+
     if (pageLoading) return <FormSkeletonLoader />;
 
     return (
@@ -38,7 +45,7 @@ const CreateTeamMember = () => {
                     <p className="my-2 text-base font-medium text-[#646464]">Input the correct personal details in the fields below;</p>
                 </div>
 
-                <Button label="Import CSV" variant="outlined" onClick={() => router.back()} />
+                <Button label="Import CSV" variant="outlined" onClick={() => setImportCsv(true)} />
             </div>
 
             <form className="mt-7" onSubmit={onSubmit}>
@@ -258,6 +265,26 @@ const CreateTeamMember = () => {
                     </div>
                 </div>
             </form>
+
+            <DropzoneModal
+                header={"Upload CSV"}
+                modalTrigger={importCsv}
+                handleClose={() => setImportCsv(false)}
+                handleInputChange={handleFileUpload}
+                fileDeleted={csvDeleted}
+                accept={{
+                    "text/*": [".csv"],
+                }}
+            >
+                <div className="mb-4 block px-3">
+                    <CSVViewer csvData={csvData} />
+                </div>
+
+                <div className=" items- flex justify-between">
+                    <Button variant="outlined" label="Delete" />
+                    <Button variant="contained" label="Submit" />
+                </div>
+            </DropzoneModal>
         </div>
     );
 };
