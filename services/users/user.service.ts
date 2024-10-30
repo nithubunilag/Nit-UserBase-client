@@ -1,14 +1,24 @@
 import { Department, Role, User } from "@/app/(dashboard)/model";
 import { axiosInstance } from "@/libs/axios";
 import { IBaseApiResponse } from "../types";
-import { ICreateUserRequest } from "./users.interface";
+import { FetchUsersQuerySchema, ICreateUserRequest, SingleUser } from "./users.interface";
 
 class UserService {
     constructor() {}
 
-    public getAllUsers = async (): Promise<IBaseApiResponse<User[]>> => {
+    public getAllUsers = async (query?: Partial<FetchUsersQuerySchema>): Promise<IBaseApiResponse<User[]>> => {
         try {
-            const { data } = await axiosInstance.get("/user");
+            const { data } = await axiosInstance.get("/user", { params: query });
+
+            return Promise.resolve(data);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    };
+
+    public getSingleUser = async (id: string): Promise<IBaseApiResponse<SingleUser>> => {
+        try {
+            const { data } = await axiosInstance.get(`/user/${id}`);
 
             return Promise.resolve(data);
         } catch (error) {

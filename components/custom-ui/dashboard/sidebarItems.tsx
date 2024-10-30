@@ -1,10 +1,9 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
-import { AcademicIcon, AdminsIcon, DashboardIcon, SettingsIcon, StaffsIcon, UserIcon } from "public/icons";
+import { DashboardIcon, SettingsIcon, StaffsIcon } from "public/icons";
 import React, { useState } from "react";
-import { SlArrowRight } from "react-icons/sl";
 import { FaHouseDamage } from "react-icons/fa";
-
+import { SlArrowRight } from "react-icons/sl";
 
 interface ISidebarItem {
     name: string;
@@ -40,40 +39,47 @@ const SidebarItems = () => {
             name: "Team",
             icon: <StaffsIcon />,
             route: "/team",
-            active: isItemActive(["user"]),
-            subItems: [
-                {
-                    name: "All",
-                    icon: <StaffsIcon />,
-                    route: "/team",
-                    active: isItemActive(["", "team"], 1),
-                },
-                {
-                    name: "Employees",
-                    icon: <AdminsIcon />,
-                    route: "/team/employees",
-                    active: isItemActive(["employees"], 2),
-                },
-                {
-                    name: "Students",
-                    icon: <AcademicIcon />,
-                    route: "/team/students",
-                    active: isItemActive(["students"], 2),
-                },
-                {
-                    name: "Interns",
-                    icon: <StaffsIcon />,
-                    route: "/user/interns",
-                    active: isItemActive(["interns"], 2),
-                },
-                {
-                    name: "Volunteers",
-                    icon: <UserIcon />,
-                    route: "/team/volunteers",
-                    active: isItemActive(["volunteers"], 2),
-                },
-            ],
+            active: isItemActive(["team"]),
         },
+
+        // {
+        //     name: "Team",
+        //     icon: <StaffsIcon />,
+        //     route: "/team",
+        //     active: isItemActive(["user"]),
+        //     subItems: [
+        //         {
+        //             name: "All",
+        //             icon: <StaffsIcon />,
+        //             route: "/team",
+        //             active: isItemActive(["", "team"], 1),
+        //         },
+        //         {
+        //             name: "Employees",
+        //             icon: <AdminsIcon />,
+        //             route: "/team/employees",
+        //             active: isItemActive(["employees"], 2),
+        //         },
+        //         {
+        //             name: "Students",
+        //             icon: <AcademicIcon />,
+        //             route: "/team/students",
+        //             active: isItemActive(["students"], 2),
+        //         },
+        //         {
+        //             name: "Interns",
+        //             icon: <StaffsIcon />,
+        //             route: "/user/interns",
+        //             active: isItemActive(["interns"], 2),
+        //         },
+        //         {
+        //             name: "Volunteers",
+        //             icon: <UserIcon />,
+        //             route: "/team/volunteers",
+        //             active: isItemActive(["volunteers"], 2),
+        //         },
+        //     ],
+        // },
         {
             name: "Departments",
             icon: <FaHouseDamage />,
@@ -111,20 +117,6 @@ const SidebarItem = ({ item, depth }: ISidebarItemProp) => {
 
         return router.push(item.route);
     };
-
-    const init = () => {
-        if (!item.subItems) return;
-
-        const anySubItemActive = item.subItems.some((subItem) => subItem.active);
-
-        if (anySubItemActive) {
-            setIsExpanded(true);
-        } else {
-            setIsExpanded(!isExpanded);
-        }
-    };
-
-    // init();
 
     const paddingLeft = depth * 35 + 32;
 

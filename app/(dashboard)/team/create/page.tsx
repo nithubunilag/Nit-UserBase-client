@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { Controller } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { usePersonalInformation } from "./usePersonalInformation";
+import { useCreateTeamMember } from "./useCreateTeamMember";
 
 const CreateTeamMember = () => {
     const {
@@ -17,7 +17,7 @@ const CreateTeamMember = () => {
         onSubmit,
         pageLoading,
         submitting,
-    } = usePersonalInformation();
+    } = useCreateTeamMember();
 
     const {
         register,
@@ -31,9 +31,15 @@ const CreateTeamMember = () => {
 
     return (
         <div className="animate-fade-in mx-auto w-[95%] max-w-[1500px]">
-            <h2 className="text-primary-dark text-2xl font-semibold">Create Team Member</h2>
+            <div className="flex items-center justify-between gap-4">
+                <div>
+                    <h2 className="text-primary-dark text-2xl font-semibold">Create Team Member</h2>
 
-            <p className="my-2 text-base font-medium text-[#646464]">Input the correct personal details in the fields below;</p>
+                    <p className="my-2 text-base font-medium text-[#646464]">Input the correct personal details in the fields below;</p>
+                </div>
+
+                <Button label="Import CSV" variant="outlined" onClick={() => router.back()} />
+            </div>
 
             <form className="mt-7" onSubmit={onSubmit}>
                 <h2 className="text-xl font-medium text-black">Personal Details</h2>

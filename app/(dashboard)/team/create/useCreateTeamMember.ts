@@ -12,7 +12,7 @@ import { useMutation, useQuery } from "react-query";
 import { z } from "zod";
 import { EducationLevel, UserGender } from "../../model";
 
-export const usePersonalInformation = () => {
+export const useCreateTeamMember = () => {
     const router = useRouter();
 
     const { isLoading: fetchingRoles, data: userRoles } = useQuery({
