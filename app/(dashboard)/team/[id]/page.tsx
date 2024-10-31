@@ -44,7 +44,7 @@ const User = ({ params }: { params: Promise<{ id: string }> }) => {
 
     const fetchingUser = useMemo(() => isLoading || isRefetching, [isLoading, isRefetching]);
 
-    const [currentTab, setCurrentTab] = useState<"attendance" | "projects" | "timeline">("attendance");
+    const [currentTab, setCurrentTab] = useState<"attendance" | "projects" | "timeline">("projects");
 
     const [projects, setProjects] = useState<Project[]>([]);
 
@@ -183,7 +183,7 @@ const User = ({ params }: { params: Promise<{ id: string }> }) => {
                         </button>
 
                         {currentTab === "projects" && (
-                            <Button variant="contained" label="Assign Project" onClick={() => setAssignProjectModal(true)} />
+                            <Button variant="contained" disabled={fetchingUser} label="Assign Project" onClick={() => setAssignProjectModal(true)} />
                         )}
                     </div>
                 </TabList>

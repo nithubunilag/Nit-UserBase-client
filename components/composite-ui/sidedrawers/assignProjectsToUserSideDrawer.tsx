@@ -88,7 +88,7 @@ export const AssignProjectsToUserSideDrawer = (props: SideDrawerProps) => {
                     </GenericTableWrapper>
                 </div>
 
-                <div className="my-16 flex flex-col justify-between gap-8 md:flex-row md:items-center">
+                <div className="my-16 flex flex-col justify-between gap-8">
                     <Select name="project" label="Project Role" options={ProjectRoles} />
 
                     <div className="flex items-center gap-3">

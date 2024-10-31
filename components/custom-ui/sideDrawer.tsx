@@ -27,17 +27,17 @@ export const SideDrawer = (props: SideDrawerProps) => {
     }, []);
 
     const drawerContent = (
-        <div className={`relative ${drawerTrigger ? "min-h-screen " : ""}`}>
+        <div className={`relative ${drawerTrigger ? "overflow-hidden " : ""}`}>
             {drawerTrigger && (
                 <div
-                    className="fixed inset-0 z-40 bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out"
+                    className="fixed inset-0 z-40 overflow-hidden bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out"
                     onClick={handleClose}
                     aria-hidden="true"
                 ></div>
             )}
 
             <div
-                className={`fixed right-0 top-0 z-50 h-full w-96 transform bg-white shadow-lg transition-transform duration-300 ease-in-out ${
+                className={`fixed right-0 top-0 z-50 h-full w-96 transform overflow-hidden bg-white shadow-lg transition-transform duration-300 ease-in-out ${
                     drawerTrigger ? "translate-x-0" : "translate-x-full"
                 }`}
             >
