@@ -1,7 +1,7 @@
-import { Department, Role, User } from "@/app/(dashboard)/model";
+import { Department, Project, Role, User } from "@/app/(dashboard)/model";
 import { axiosInstance } from "@/libs/axios";
 import { IBaseApiResponse } from "../types";
-import { FetchUsersQuerySchema, ICreateUserRequest, SingleUser } from "./users.interface";
+import { FetchUsersQuerySchema, ICreateProjectRequest, ICreateUserRequest, SingleUser } from "./users.interface";
 
 class UserService {
     constructor() {}
@@ -59,6 +59,46 @@ class UserService {
     public createDepartment = async (payload: string): Promise<IBaseApiResponse<Department>> => {
         try {
             const { data } = await axiosInstance.post("/user/departments", { name: payload });
+
+            return Promise.resolve(data);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    };
+
+    public getAllProjects = async (): Promise<IBaseApiResponse<Project[]>> => {
+        try {
+            const { data } = await axiosInstance.get("/user/projects");
+
+            return Promise.resolve(data);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    };
+
+    public createProject = async (payload: ICreateProjectRequest): Promise<IBaseApiResponse<Project>> => {
+        try {
+            const { data } = await axiosInstance.post("/user/projects", payload);
+
+            return Promise.resolve(data);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    };
+
+    public getSingleProject = async (id: string): Promise<IBaseApiResponse<Project>> => {
+        try {
+            const { data } = await axiosInstance.get(`/user/projects/${id}`);
+
+            return Promise.resolve(data);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    };
+
+    public assignProjectsToUser = async (userId: string, projectIds: string[]): Promise<IBaseApiResponse<Project>> => {
+        try {
+            const { data } = await axiosInstance.post(`/user/${userId}/assign-projects`, { projectIds });
 
             return Promise.resolve(data);
         } catch (error) {

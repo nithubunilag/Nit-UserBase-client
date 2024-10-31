@@ -1,12 +1,13 @@
 import { axiosInstance } from "@/libs/axios";
-import { ILoginRequest, IResetPassword, ISignupRequest } from "./auth.interface";
+import { IBaseApiResponse } from "../types";
+import { ILoginRequest, ILoginResponse, IResetPassword, ISignupRequest } from "./auth.interface";
 
 class AuthService {
     private authUrl!: string;
 
     constructor() {}
 
-    public async login(data: ILoginRequest) {
+    public async login(data: ILoginRequest): Promise<IBaseApiResponse<ILoginResponse>> {
         return await axiosInstance.post(`/auth/login`, data);
     }
 

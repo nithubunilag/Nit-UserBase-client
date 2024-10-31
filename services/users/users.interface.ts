@@ -18,6 +18,7 @@ export interface ICreateUserRequest {
 
 export interface SingleUser {
     user: User;
+    employmentTimeline: any;
 }
 
 export interface FetchUsersQuerySchema {
@@ -29,4 +30,9 @@ export interface FetchUsersQuerySchema {
     sortOrder: "asc" | "desc";
     page: number;
     limit: number;
+}
+
+export interface ICreateProjectRequest {
+    name: string;
+    description: string;
 }

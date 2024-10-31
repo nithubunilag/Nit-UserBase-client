@@ -19,6 +19,25 @@ export interface Department {
     createdAt: string;
 }
 
+export interface Project {
+    id: string;
+    name: string;
+    description: string;
+    status: "active" | "completed" | "pending";
+    createdAt: string;
+    users: User[];
+    userProject?: UserProject;
+}
+
+interface UserProject {
+    id: string;
+    userId: string;
+    projectId: string;
+    roleInProject: "Contributor" | "Admin" | "Viewer";
+    createdAt: string;
+    updatedAt: string;
+}
+
 export interface Role {
     id: string;
     name: string;
@@ -45,4 +64,5 @@ export interface User {
     updatedAt: string;
     department?: Department;
     role?: Role;
+    projects?: Project[];
 }

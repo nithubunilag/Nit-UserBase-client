@@ -1,6 +1,7 @@
 import { makeToast } from "@/libs/react-toast";
 import { authService, ILoginRequest } from "@/services/auth";
 import { IApiError } from "@/services/types";
+import { ACCESS_TOKEN_KEY } from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -22,7 +23,9 @@ export const useLogin = () => {
     } = useMutation({
         mutationFn: (data: ILoginRequest) => authService.login(data),
 
-        onSuccess: () => {
+        onSuccess: (payload: any) => {
+            localStorage.setItem(ACCESS_TOKEN_KEY, payload.data.data.accessToken);
+
             router.push("/");
         },
     });
@@ -47,13 +50,7 @@ export const useLogin = () => {
     });
 
     const onSubmit: SubmitHandler<LoginSchemaType> = async (data) => {
-        try {
-            await loginAccount(data);
-
-            router.push("/team");
-        } catch (error) {
-            console.log(error);
-        }
+        await loginAccount(data);
     };
 
     const loggingInError = useCallback(() => {

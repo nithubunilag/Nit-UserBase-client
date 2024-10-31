@@ -1,5 +1,7 @@
 /***********  SIGNUP  ***********/
 
+import { User } from "@/app/(dashboard)/model";
+
 export interface ISignupRequest {
     email: string;
     password: string;
@@ -25,3 +27,8 @@ export interface ISignupRequest {
     password: string;
   }
   
+
+  export interface ILoginResponse {
+    authUser: User;
+    accessToken: string;
+  }

@@ -14,6 +14,7 @@ const ROUTES = {
         TEAM: "/team",
         EMPLOYEES: "/team/employees",
         DEPARTMENT: "/departments",
+        PROJECT: "/projects",
     },
 };
 
@@ -23,6 +24,8 @@ const CACHE_KEYS = {
     LOG_OUT: "LOG_OUT",
     ALL_TEAM: "ALL_TEAM",
     DEPARTMENT: "DEPARTMENT",
+    PROJECT: "PROJECT",
+    ASSIGN_PROJECTS_TO_USER: "ASSIGN_PROJECTS_TO_USER",
     ROLE: "ROLE",
 };
 

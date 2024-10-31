@@ -4,6 +4,8 @@ import { DashboardIcon, SettingsIcon, StaffsIcon } from "public/icons";
 import React, { useState } from "react";
 import { FaHouseDamage } from "react-icons/fa";
 import { SlArrowRight } from "react-icons/sl";
+import { MdOutlineFolderCopy } from "react-icons/md";
+
 
 interface ISidebarItem {
     name: string;
@@ -81,11 +83,18 @@ const SidebarItems = () => {
         //     ],
         // },
         {
+            name: "Projects",
+            icon: <MdOutlineFolderCopy />,
+            route: "/projects",
+            active: isItemActive(["projects"]),
+        },
+        {
             name: "Departments",
             icon: <FaHouseDamage />,
             route: "/departments",
             active: isItemActive(["departments"]),
         },
+
         {
             name: "Settings",
             icon: <SettingsIcon />,

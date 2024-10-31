@@ -7,3 +7,4 @@ export * from "./popOver";
 export * from "./search";
 export * from "./spinner";
 export * from "./timeline";
+export * from "./sideDrawer";

@@ -22,7 +22,7 @@ const Login = () => {
                 <div className="mb-8 md:mb-10">
                     <NitdaLogo width={150} height={70} className="mb-4" />
 
-                    <AuthHeader message="Welcome Back" />
+                    <AuthHeader message="Welcome Backs" />
 
                     <SubHeader message="Fill in the correct form below:" />
                 </div>

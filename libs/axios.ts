@@ -1,16 +1,21 @@
 import axios from "axios";
+import { ACCESS_TOKEN_KEY } from "../utils";
 
 export const axiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
     withCredentials: true,
-   
-
 });
 
 // INTERCEPTORS
 axiosInstance.interceptors.request.use(
     async (config) => {
-        // interceptor logic goes here. e.g additional headers, request encryption, session management, etc.
+        const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+
+        if (!accessToken) return config;
+
+        if (config.headers) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
+        }
 
         return config;
     },

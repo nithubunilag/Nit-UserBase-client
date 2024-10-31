@@ -1,4 +1,5 @@
 "use client";
+import { CreateDepartmentSideDrawer } from "@/components/composite-ui/sidedrawers";
 import { GenericTableWrapper } from "@/components/composite-ui/tables";
 import { Button, Header, PopOver, Search } from "@/components/custom-ui";
 import { Table } from "@/components/custom-ui/table";
@@ -6,7 +7,6 @@ import { makeToast } from "@/libs/react-toast";
 import { RefreshIcon } from "@/public/icons";
 import { userService } from "@/services/users/user.service";
 import { CACHE_KEYS, ROUTES } from "@/utils/constants";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaEllipsisVertical } from "react-icons/fa6";
@@ -49,6 +49,8 @@ const Departments = () => {
 
     const [departments, setDepartments] = useState<Department[]>([]);
 
+    const [createDepartment, setCreateDepartment] = useState(false);
+
     const [selectedItems, setSelectedItems] = useState<Department[]>([]);
 
     return (
@@ -82,11 +84,9 @@ const Departments = () => {
 
                     <Button
                         variant="contained"
-                        label={
-                            <Link href="/departments/create" className="text-sm">
-                                Create Department
-                            </Link>
-                        }
+                        onClick={() => setCreateDepartment(true)}
+                        className="text-sm font-semibold"
+                        label="Create New Department"
                     />
 
                     <Search initialState={departments} setState={setDepartments} conditionKeyword="name" resetState={apiDepartments?.data ?? []} />
@@ -104,12 +104,20 @@ const Departments = () => {
             >
                 {(item) => (
                     <>
-                        <Table.Cell>{item.id}</Table.Cell>
+                        <Table.Cell nonCapitalize>{item.id}</Table.Cell>
                         <Table.Cell>{item.name}</Table.Cell>
                         <Table.Cell>{item?.createdAt?.split("T")[0]}</Table.Cell>
                     </>
                 )}
             </GenericTableWrapper>
+
+            <CreateDepartmentSideDrawer
+                drawerTrigger={createDepartment}
+                handleClose={() => {
+                    setCreateDepartment(false);
+                    fetchAllDepartments();
+                }}
+            />
         </div>
     );
 };
