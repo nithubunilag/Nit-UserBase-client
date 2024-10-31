@@ -2,7 +2,8 @@ import axios from "axios";
 import { ACCESS_TOKEN_KEY } from "../utils";
 
 export const axiosInstance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
+    // baseURL: process.env.NEXT_PUBLIC_API_URL,
+    baseURL:"https://nit-identity-api.onrender.com/api/v1",
     withCredentials: true,
 });
 
