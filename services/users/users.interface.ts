@@ -16,9 +16,19 @@ export interface ICreateUserRequest {
     educationLevel?: EducationLevel;
 }
 
+export interface EmploymentTimeline {
+    id: string;
+    userId: string;
+    action: string;
+    oldValue: string;
+    newValue: string;
+    user: User;
+    createdAt: string;
+}
+
 export interface SingleUser {
     user: User;
-    employmentTimeline: any;
+    employmentTimeline: EmploymentTimeline[];
 }
 
 export interface FetchUsersQuerySchema {

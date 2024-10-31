@@ -7,6 +7,7 @@ import { Tab, TabList, TabPanel, Tabs } from "@/components/custom-ui/tabs";
 import { makeToast } from "@/libs/react-toast";
 import { RefreshIcon } from "@/public/icons";
 import { userService } from "@/services/users/user.service";
+import { EmploymentTimeline } from "@/services/users/users.interface";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useMemo, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
@@ -48,8 +49,11 @@ const User = ({ params }: { params: Promise<{ id: string }> }) => {
 
     const [projects, setProjects] = useState<Project[]>([]);
 
+    const [employmentTimelines, setEmploymentTimelines] = useState<EmploymentTimeline[]>([]);
+
     useEffect(() => {
         setProjects(apiUser?.data.user.projects ?? []);
+        setEmploymentTimelines(apiUser?.data.employmentTimeline ?? []);
     }, [apiUser?.data]);
 
     if (!id) router.push("/team");
@@ -222,21 +226,48 @@ const User = ({ params }: { params: Promise<{ id: string }> }) => {
 
                 <TabPanel>
                     <GenericTableWrapper
-                        data={[]}
+                        data={employmentTimelines}
                         skeletonRows={5}
-                        isLoading={false}
-                        tableHead={["Date", "Check In", "Check Out", "Status", "Total Hours"]}
+                        isLoading={fetchingUser}
+                        tableHead={["Date", "Title", "Activity"]}
                     >
                         {(item) => (
                             <>
-                                <Table.Cell>Hello</Table.Cell>
+                                <Table.Cell>{item.createdAt.split("T")[0]}</Table.Cell>
+                                <Table.Cell>{item.action}</Table.Cell>
+                                <Table.Cell>
+                                    {item.action === "project_assignment" && (
+                                        <>
+                                            Assigned to <span className="font-semibold text-black">{item.newValue}</span>
+                                        </>
+                                    )}
+
+                                    {item.action === "department_change" && (
+                                        <>
+                                            Department changed from <span className="font-semibold text-black">{item.oldValue}</span> to{" "}
+                                            <span className="font-semibold text-black">{item.newValue}</span>
+                                        </>
+                                    )}
+
+                                    {item.action === "role_change" && (
+                                        <>
+                                            Role changed from <span className="font-semibold text-black">{item.oldValue}</span> to{" "}
+                                            <span className="font-semibold text-black">{item.newValue}</span>
+                                        </>
+                                    )}
+                                </Table.Cell>
                             </>
                         )}
                     </GenericTableWrapper>
                 </TabPanel>
             </Tabs>
 
-            <AssignProjectsToUserSideDrawer drawerTrigger={assignProjectModal} handleClose={() => setAssignProjectModal(false)} userId={id} />
+            <AssignProjectsToUserSideDrawer
+                drawerTrigger={assignProjectModal}
+                handleClose={() => setAssignProjectModal(false)}
+                userId={id}
+                projects={projects}
+            />
         </>
     );
 };

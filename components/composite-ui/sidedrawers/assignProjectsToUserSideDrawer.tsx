@@ -5,7 +5,7 @@ import { Table } from "@/components/custom-ui/table";
 import { makeToast } from "@/libs/react-toast";
 import { userService } from "@/services/users/user.service";
 import { CACHE_KEYS } from "@/utils/constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { GenericTableWrapper } from "../tables";
 
@@ -13,10 +13,11 @@ interface SideDrawerProps {
     drawerTrigger: boolean;
     handleClose: () => void;
     userId: string;
+    projects?: Project[];
 }
 
 export const AssignProjectsToUserSideDrawer = (props: SideDrawerProps) => {
-    const { drawerTrigger, handleClose, userId } = props;
+    const { drawerTrigger, handleClose, userId, projects } = props;
 
     const [selectedItems, setSelectedItems] = useState<Project[]>([]);
 
@@ -38,8 +39,7 @@ export const AssignProjectsToUserSideDrawer = (props: SideDrawerProps) => {
         mutationFn: (projectIds: string[]) => userService.assignProjectsToUser(userId, projectIds),
 
         onSuccess: (data) => {
-            console.log(data);
-            // closeDrawer();
+            closeDrawer();
         },
 
         onError: () => {
@@ -61,7 +61,23 @@ export const AssignProjectsToUserSideDrawer = (props: SideDrawerProps) => {
             label: "Project Manager",
             value: "project-manager",
         },
+        {
+            label: "Contributor",
+            value: "contributor",
+        },
     ];
+
+    useEffect(() => {
+        if (projects?.length) {
+            const allProjects = projects.map((item) => {
+                delete item.userProject;
+
+                return item;
+            });
+
+            setSelectedItems(allProjects);
+        }
+    }, [projects]);
 
     return (
         <SideDrawer drawerTrigger={drawerTrigger} handleClose={closeDrawer}>
@@ -77,6 +93,7 @@ export const AssignProjectsToUserSideDrawer = (props: SideDrawerProps) => {
                         skeletonRows={5}
                         showCheckbox={true}
                         onRowClick={(item) => console.log(item)}
+                        initialSelectedItems={selectedItems}
                         tableHead={["Name"]}
                         onSelectionChange={(selectedItems) => setSelectedItems(selectedItems)}
                     >

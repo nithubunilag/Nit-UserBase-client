@@ -1,4 +1,2 @@
-export * from "./AuthSlice";
 export * from "./appSlice";
-
-export * from "./applicantsSlice";
+export * from "./AuthSlice";
