@@ -1,6 +1,7 @@
 "use client";
 
 import { Navbar, Sidebar } from "@/components/custom-ui/dashboard";
+import { useScreenSize } from "@/hooks";
 import { ACCESS_TOKEN_KEY, ROUTES } from "@/utils/constants";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -9,6 +10,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
 
     if (!accessToken) redirect(ROUTES.auth.LOGIN);
+
+    useScreenSize();
 
     return (
         <div className="h-full min-h-screen bg-[#F6F7FD]">

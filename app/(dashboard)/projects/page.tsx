@@ -19,7 +19,7 @@ const Projects = () => {
         data: apiProjects,
     } = useQuery({
         queryKey: [CACHE_KEYS.PROJECT],
-        queryFn: userService.getAllProjects,
+        queryFn: () => userService.getAllProjects(),
 
         onError: (error: any) => {
             if (error?.response?.status === 401) {

@@ -5,3 +5,4 @@ export * from "./useReduxActions";
 export * from "./useSearch";
 export * from "./useTablePagination";
 export * from "./useCsvParser";
+export * from "./useScreenSize";

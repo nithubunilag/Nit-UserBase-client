@@ -1,5 +1,6 @@
 "use client";
 
+import { useAppSelector } from "@/hooks";
 import { authService } from "@/services/auth";
 import { CACHE_KEYS } from "@/utils/constants";
 import Image from "next/image";
@@ -10,13 +11,13 @@ import { Spinner } from "..";
 import SidebarItems from "./sidebarItems";
 
 export const Sidebar = () => {
-    const sidebarOpened = true;
-
     const [popItemOpened, setPopItemOpened] = useState(false);
+
+    const { sidebarOpened } = useAppSelector((state) => state.appSlice);
 
     return (
         <aside
-            className={`transition-width fixed left-0 top-0 z-[3] flex h-full flex-shrink-0 flex-col duration-75 lg:flex ${
+            className={`transition-width fixed left-0 top-0 z-[3] flex h-full flex-shrink-0 flex-col duration-300 lg:flex ${
                 sidebarOpened ? "w-screen md:w-[17rem]" : "w-0"
             }`}
             aria-label="Sidebar"

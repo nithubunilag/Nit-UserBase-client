@@ -16,6 +16,8 @@ export interface ICreateUserRequest {
     educationLevel?: EducationLevel;
 }
 
+export type ProjectStatus = "active" | "completed" | "pending";
+
 export interface EmploymentTimeline {
     id: string;
     userId: string;
@@ -31,17 +33,24 @@ export interface SingleUser {
     employmentTimeline: EmploymentTimeline[];
 }
 
-export interface FetchUsersQuerySchema {
-    role: string;
-    gender: UserGender;
-    educationLevel: EducationLevel;
-    department: string;
-    sortBy: "fullName" | "createdAt";
+export interface FetchQuerySchema {
     sortOrder: "asc" | "desc";
     page: number;
     limit: number;
 }
 
+export interface FetchUsersQuerySchema extends FetchQuerySchema {
+    role: string;
+    gender: UserGender;
+    educationLevel: EducationLevel;
+    department: string;
+    sortBy: "fullName" | "createdAt";
+}
+
+export interface FetchProjectsQuerySchema extends FetchQuerySchema {
+    status: ProjectStatus;
+    sortBy: "name" | "createdAt";
+}
 export interface ICreateProjectRequest {
     name: string;
     description: string;

@@ -1,7 +1,7 @@
 import { Department, Project, Role, User } from "@/app/(dashboard)/model";
 import { axiosInstance } from "@/libs/axios";
 import { IBaseApiResponse } from "../types";
-import { FetchUsersQuerySchema, ICreateProjectRequest, ICreateUserRequest, SingleUser } from "./users.interface";
+import { FetchProjectsQuerySchema, FetchUsersQuerySchema, ICreateProjectRequest, ICreateUserRequest, SingleUser } from "./users.interface";
 
 class UserService {
     constructor() {}
@@ -66,9 +66,9 @@ class UserService {
         }
     };
 
-    public getAllProjects = async (): Promise<IBaseApiResponse<Project[]>> => {
+    public getAllProjects = async (query?: Partial<FetchProjectsQuerySchema>): Promise<IBaseApiResponse<Project[]>> => {
         try {
-            const { data } = await axiosInstance.get("/user/projects");
+            const { data } = await axiosInstance.get("/user/projects", { params: query });
 
             return Promise.resolve(data);
         } catch (error) {

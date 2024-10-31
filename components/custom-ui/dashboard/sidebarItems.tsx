@@ -1,11 +1,11 @@
 "use client";
+import { useAppActions, useAppSelector } from "@/hooks";
 import { usePathname, useRouter } from "next/navigation";
 import { DashboardIcon, SettingsIcon, StaffsIcon } from "public/icons";
 import React, { useState } from "react";
 import { FaHouseDamage } from "react-icons/fa";
-import { SlArrowRight } from "react-icons/sl";
 import { MdOutlineFolderCopy } from "react-icons/md";
-
+import { SlArrowRight } from "react-icons/sl";
 
 interface ISidebarItem {
     name: string;
@@ -117,11 +117,18 @@ export default SidebarItems;
 const SidebarItem = ({ item, depth }: ISidebarItemProp) => {
     const [isExpanded, setIsExpanded] = useState(item?.subItems?.some((subItem) => subItem.active) ? true : false);
 
+    const { setSidebar } = useAppActions();
+    const { isMobile } = useAppSelector((state) => state.appSlice);
+
     const router = useRouter();
 
     const handleClick = () => {
         if (item.subItems) {
             return setIsExpanded(!isExpanded);
+        }
+
+        if (isMobile) {
+            setSidebar(false);
         }
 
         return router.push(item.route);

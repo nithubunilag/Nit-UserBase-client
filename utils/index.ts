@@ -4,3 +4,4 @@ export * from "./getAsset";
 export * from "./getDropdownValue";
 export * from "./valueChanged";
 export * from "./removeEmptyKeys";
+export * from "./quotes";

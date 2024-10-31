@@ -1,6 +1,11 @@
 "use client";
+import { makeToast } from "@/libs/react-toast";
+import { userService } from "@/services/users/user.service";
+import { CACHE_KEYS } from "@/utils/constants";
+import { QUOTES } from "@/utils/quotes";
 import { PeopleIcon } from "public/icons";
 import { useState } from "react";
+import { useQuery } from "react-query";
 import { Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 const data = [
@@ -88,11 +93,39 @@ const data2 = [
 
 const COLORS = ["#0093DD", "#03BFC0", "#F59BE9", "#9747FF", "#FFC263"];
 const Home = () => {
+    const { isLoading: fetchingProjects, data: activeProjects } = useQuery({
+        queryKey: [CACHE_KEYS.PROJECT],
+        queryFn: () => userService.getAllProjects({ status: "active" }),
+
+        onError: (error: any) => {
+            makeToast({
+                message: "Error Retrieving Projects. Please Contact Support",
+                type: "error",
+                id: "project-error",
+            });
+        },
+    });
+
+    const getRandomQuotes = () => {
+        const randomIndex = Math.floor(Math.random() * QUOTES.length);
+        return QUOTES[randomIndex];
+    };
+
+    const getTimeBasedGreeting = () => {
+        const hour = new Date().getHours();
+
+        if (hour >= 0 && hour < 4) return "You no go like go sleep, You be winch";
+        if (hour >= 4 && hour < 12) return "Ekaaro Chief 🙌🏽 🤲🏽";
+        if (hour >= 12 && hour < 20) return "Senior Man, How your side?🧎🏽‍♂️ ";
+        return "Omooooo, I wan go Sleep 😴😴";
+    };
+
     const [addCourse, setAddCourse] = useState(false);
     return (
         <div className="animate__animated animate__fadeIn -mt-2 min-h-screen gap-4 ">
-            <h2 className="mb-2 text-2xl font-medium ">Good morning Oluwapelumi</h2>
-            <p className="mb-10 text-base font-normal text-[#646464]">I hope your day is going good, Oluwapelumi</p>
+            <h2 className="mb-2 text-2xl font-medium ">{getTimeBasedGreeting()}</h2>
+            <p className="mb-10 text-base font-normal text-[#646464]">{getRandomQuotes()}</p>
+
             <div className="flex items-center justify-between gap-2">
                 <div
                     className="w-full rounded-[5px] py-10 pl-6"
@@ -102,7 +135,7 @@ const Home = () => {
                 >
                     <div className="flex flex-col justify-between gap-2 text-white ">
                         <PeopleIcon />
-                        <h2 className="text-base font-medium">Total Enrolled Students</h2>
+                        <h2 className="text-base font-medium">Total Team Members</h2>
                         <span className="text-xl font-medium">1567</span>
                     </div>
                 </div>
@@ -115,7 +148,7 @@ const Home = () => {
                 >
                     <div className="flex flex-col justify-between gap-2 text-white ">
                         <PeopleIcon />
-                        <h2 className="text-base font-medium">Total Enrolled Students</h2>
+                        <h2 className="text-base font-medium">Total Departments Students</h2>
                         <span className="text-xl font-medium">1567</span>
                     </div>
                 </div>
@@ -157,78 +190,44 @@ const Home = () => {
                 </ResponsiveContainer>
             </div>
 
-            <div className="mt-10 rounded-md bg-white py-4 shadow-md">
+            <div className="my-10 rounded-md bg-white py-4 shadow-md">
                 <div className="mb-5 border-b border-b-[#E5E5DF] pb-5 ">
                     <div className="mx-auto flex w-[95%] items-center justify-between">
-                        <h2 className="text-lg font-medium text-black">Courses</h2>
-                        <button
-                            onClick={() => setAddCourse(true)}
-                            className="text-base font-medium text-[#0A7E27] underline-offset-2 transition-all duration-200 ease-in-out hover:underline"
-                        >
-                            Add
-                        </button>
+                        <h2 className="text-lg font-medium text-black">Current Projects</h2>
                     </div>
                 </div>
 
-                <div className="mx-auto mb-5 flex w-[95%] items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="h-[50px] w-[60px] bg-[#D9D9D9]" />
-                        <div>
-                            <h2 className="text-sm font-normal ">Community of Health Nursing</h2>
-                            <span className="text-xs font-normal text-[#797979]">Nursing Science</span>
+                {fetchingProjects && (
+                    <>
+                        {new Array(9).fill(0).map((_, index) => (
+                            <div key={index} className="mx-auto mb-5 flex w-[95%] animate-pulse items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="h-[50px] w-[60px] rounded bg-gray-200" />
+                                    <div>
+                                        <div className="mb-2 h-4 w-32 rounded bg-gray-200" />
+                                        <div className="h-3 w-48 rounded bg-gray-200" />
+                                    </div>
+                                </div>
+                                <div className="h-4 w-16 rounded bg-gray-200" />
+                            </div>
+                        ))}
+                    </>
+                )}
+
+                {!fetchingProjects &&
+                    activeProjects?.data.slice(0, 10).map((project) => (
+                        <div key={project.id} className="mx-auto mb-5 flex w-[95%] animate-fade-in items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="h-[50px] w-[60px] bg-[#D9D9D9]" />
+                                <div>
+                                    <h2 className="text-sm font-normal ">{project.name}</h2>
+                                    <span className="text-xs font-normal text-[#797979]">{project.description}</span>
+                                </div>
+                            </div>
+
+                            <span className="text-sm font-normal text-[#797979]">{project?.users?.length ?? 0} Users</span>
                         </div>
-                    </div>
-
-                    <span className="text-sm font-normal text-[#797979]">135,433 students</span>
-                </div>
-
-                <div className="mx-auto mb-5 flex w-[95%] items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="h-[50px] w-[60px] bg-[#D9D9D9]" />
-                        <div>
-                            <h2 className="text-sm font-normal ">Community of Health Nursing</h2>
-                            <span className="text-xs font-normal text-[#797979]">Nursing Science</span>
-                        </div>
-                    </div>
-
-                    <span className="text-sm font-normal text-[#797979]">135,433 students</span>
-                </div>
-
-                <div className="mx-auto mb-5 flex w-[95%] items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="h-[50px] w-[60px] bg-[#D9D9D9]" />
-                        <div>
-                            <h2 className="text-sm font-normal ">Community of Health Nursing</h2>
-                            <span className="text-xs font-normal text-[#797979]">Nursing Science</span>
-                        </div>
-                    </div>
-
-                    <span className="text-sm font-normal text-[#797979]">135,433 students</span>
-                </div>
-
-                <div className="mx-auto mb-5 flex w-[95%] items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="h-[50px] w-[60px] bg-[#D9D9D9]" />
-                        <div>
-                            <h2 className="text-sm font-normal ">Community of Health Nursing</h2>
-                            <span className="text-xs font-normal text-[#797979]">Nursing Science</span>
-                        </div>
-                    </div>
-
-                    <span className="text-sm font-normal text-[#797979]">135,433 students</span>
-                </div>
-
-                <div className="mx-auto mb-5 flex w-[95%] items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="h-[50px] w-[60px] bg-[#D9D9D9]" />
-                        <div>
-                            <h2 className="text-sm font-normal ">Community of Health Nursing</h2>
-                            <span className="text-xs font-normal text-[#797979]">Nursing Science</span>
-                        </div>
-                    </div>
-
-                    <span className="text-sm font-normal text-[#797979]">135,433 students</span>
-                </div>
+                    ))}
             </div>
         </div>
     );
