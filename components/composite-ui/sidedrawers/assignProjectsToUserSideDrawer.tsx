@@ -17,7 +17,7 @@ interface SideDrawerProps {
 }
 
 export const AssignProjectsToUserSideDrawer = (props: SideDrawerProps) => {
-    const { drawerTrigger, handleClose, userId, projects } = props;
+    const { drawerTrigger, handleClose, userId } = props;
 
     const [selectedItems, setSelectedItems] = useState<Project[]>([]);
 
@@ -38,7 +38,7 @@ export const AssignProjectsToUserSideDrawer = (props: SideDrawerProps) => {
     const { mutateAsync: assignProjects, isLoading: assigningProjects } = useMutation({
         mutationFn: (projectIds: string[]) => userService.assignProjectsToUser(userId, projectIds),
 
-        onSuccess: (data) => {
+        onSuccess: () => {
             closeDrawer();
         },
 
@@ -68,16 +68,18 @@ export const AssignProjectsToUserSideDrawer = (props: SideDrawerProps) => {
     ];
 
     useEffect(() => {
-        if (projects?.length) {
-            const allProjects = projects.map((item) => {
-                delete item.userProject;
+        if (apiProjects?.data?.length) {
+            const selectedProjects = apiProjects.data.filter((apiProject) => apiProject.users?.some((user) => user.id === userId));
 
-                return item;
-            });
-
-            setSelectedItems(allProjects);
+            setSelectedItems(selectedProjects);
         }
-    }, [projects]);
+    }, [apiProjects, userId]);
+
+    const isRowDisabled = (item: Project) => {
+        const user = item.users?.find((user) => user.id === userId);
+
+        return user ? true : false;
+    };
 
     return (
         <SideDrawer drawerTrigger={drawerTrigger} handleClose={closeDrawer}>
@@ -92,9 +94,9 @@ export const AssignProjectsToUserSideDrawer = (props: SideDrawerProps) => {
                         isLoading={fetchingProjects}
                         skeletonRows={5}
                         showCheckbox={true}
-                        onRowClick={(item) => console.log(item)}
-                        initialSelectedItems={selectedItems}
                         tableHead={["Name"]}
+                        isRowDisabled={isRowDisabled}
+                        initialSelectedItems={selectedItems}
                         onSelectionChange={(selectedItems) => setSelectedItems(selectedItems)}
                     >
                         {(item) => (
@@ -106,7 +108,7 @@ export const AssignProjectsToUserSideDrawer = (props: SideDrawerProps) => {
                 </div>
 
                 <div className="my-16 flex flex-col justify-between gap-8">
-                    <Select name="project" label="Project Role" options={ProjectRoles} />
+                    <Select name="project" label="Project Role" options={ProjectRoles} borderClass="border-secondary" />
 
                     <div className="flex items-center gap-3">
                         <Button label="Back" variant="outlined" onClick={closeDrawer} />

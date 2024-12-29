@@ -1,0 +1,10 @@
+Admin Creates new Employee
+Employee gets email telling them to setup biometrics
+They open the page and are prompted to enter their employee id
+
+Once they enter it and it's valid, they add in their biometrics
+
+Admin can give employee auth acccess
+
+
+Re do the migrations for the database and add new users to test the otp system

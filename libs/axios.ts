@@ -3,7 +3,6 @@ import { ACCESS_TOKEN_KEY } from "../utils";
 
 export const axiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
-    // baseURL:"https://nit-identity-api.onrender.com/api/v1",
     withCredentials: true,
 });
 
@@ -32,6 +31,12 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     (error) => {
+        if (error.response && error.response.status === 401) {
+            localStorage.removeItem(ACCESS_TOKEN_KEY);
+
+            window.location.href = "/auth/login/";
+        }
+
         return Promise.reject(error);
     },
 );

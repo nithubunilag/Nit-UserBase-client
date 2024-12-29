@@ -1,3 +1,4 @@
+import { Project } from "@/app/(dashboard)/model";
 import { Button, SideDrawer } from "@/components/custom-ui";
 import { Input, TextArea } from "@/components/custom-ui/form";
 import { makeToast } from "@/libs/react-toast";
@@ -12,10 +13,11 @@ import { z } from "zod";
 interface SideDrawerProps {
     drawerTrigger: boolean;
     handleClose: () => void;
+    project?: Project;
 }
 
 export const CreateProjectSideDrawer = (props: SideDrawerProps) => {
-    const { drawerTrigger, handleClose } = props;
+    const { drawerTrigger, handleClose, project } = props;
 
     const { mutateAsync: createProject, isLoading: creatingProject } = useMutation({
         mutationFn: (data: ICreateProjectRequest) => userService.createProject(data),
@@ -47,6 +49,11 @@ export const CreateProjectSideDrawer = (props: SideDrawerProps) => {
         reset,
     } = useForm<CreateProjectSchemaType>({
         resolver: zodResolver(createProjectSchema),
+
+        defaultValues: {
+            description: project?.description ?? "",
+            name: project?.name ?? "",
+        },
     });
 
     const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -65,7 +72,7 @@ export const CreateProjectSideDrawer = (props: SideDrawerProps) => {
     return (
         <SideDrawer drawerTrigger={drawerTrigger} handleClose={closeDrawer}>
             <div className="mx-auto w-[85%] animate-fade-in py-10">
-                <h2 className="text-2xl font-semibold text-secondary">Create Project</h2>
+                <h2 className="text-2xl font-semibold text-secondary">{project ? "Update" : "Create"} Project</h2>
 
                 <p className="my-2 text-base font-medium text-[#646464]">Input the correct details in the fields below;</p>
 
@@ -78,6 +85,7 @@ export const CreateProjectSideDrawer = (props: SideDrawerProps) => {
                                 label="Project Name"
                                 register={register}
                                 placeholder="Dynamic Certificate Generator"
+                                value={project?.name}
                                 error={errors?.name ? errors.name.message : undefined}
                             />
                         </div>
@@ -104,8 +112,6 @@ export const CreateProjectSideDrawer = (props: SideDrawerProps) => {
                         </div>
                     </div>
                 </form>
-
-                
             </div>
         </SideDrawer>
     );

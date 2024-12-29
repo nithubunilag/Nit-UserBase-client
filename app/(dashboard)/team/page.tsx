@@ -92,7 +92,7 @@ const Team = () => {
             </div>
 
             <Tabs>
-                <TabList className="mb-8 flex items-center justify-between gap-2">
+                <TabList className="mb-8 flex flex-col md:flex-row items-center justify-between gap-5">
                     <div>
                         <Tab onClick={() => handleClickRole("All")}>All</Tab>
                         <Tab onClick={() => handleClickRole("Employee")}>Employees</Tab>

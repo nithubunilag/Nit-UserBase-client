@@ -53,13 +53,11 @@ const Projects = () => {
 
     return (
         <div>
-            <div className="mb-10 flex items-center justify-between gap-[10px]">
-                <div className="flex w-[40%] items-center justify-between">
-                    <Header message="Projects" />
-                </div>
+            <div className="mb-10 flex flex-col justify-between gap-9 md:flex-row md:items-center">
+                <Header message="Projects" />
 
-                <div className="flex gap-4">
-                    <button className="group rounded-[4px] border border-secondary px-[14px]" onClick={() => fetchAllProjects()}>
+                <div className="flex flex-col gap-4 md:flex-row">
+                    <button className="group rounded-[4px] hidden md:block border border-secondary px-[14px]" onClick={() => fetchAllProjects()}>
                         <RefreshIcon
                             className={`${fetchingProjects ? "animate-spin" : ""} transition-all duration-300 ease-in-out group-hover:scale-110`}
                         />

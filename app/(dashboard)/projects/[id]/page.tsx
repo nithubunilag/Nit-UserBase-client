@@ -1,6 +1,6 @@
 "use client";
 import { GenericTableWrapper } from "@/components/composite-ui/tables";
-import { Header, Search } from "@/components/custom-ui";
+import { Button, Header, Search } from "@/components/custom-ui";
 import { Table } from "@/components/custom-ui/table";
 import { Tab, TabList, TabPanel, Tabs } from "@/components/custom-ui/tabs";
 import { makeToast } from "@/libs/react-toast";
@@ -10,11 +10,12 @@ import { use, useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { useQuery } from "react-query";
 import { User } from "../../model";
+import { CreateProjectSideDrawer } from "@/components/composite-ui/sidedrawers";
 
 const Project = ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = use(params);
 
-    const { isLoading: fetchingProject, data: apiProject } = useQuery({
+    const { isLoading: fetchingProject, data: apiProject, refetch } = useQuery({
         queryFn: () => userService.getSingleProject(id),
 
         onSuccess(data) {
@@ -35,6 +36,7 @@ const Project = ({ params }: { params: Promise<{ id: string }> }) => {
     const router = useRouter();
 
     const [projectUsers, setProjectUsers] = useState<User[]>(apiProject?.data.users ?? []);
+    const [updateProject, setUpdateProject] = useState(false);
 
     useEffect(() => {
         setProjectUsers(apiProject?.data.users ?? []);
@@ -67,18 +69,22 @@ const Project = ({ params }: { params: Promise<{ id: string }> }) => {
 
             {!fetchingProject && (
                 <main className="animate-fade-in">
-                    <div>
-                        <div className="mb-2 flex items-center gap-4">
-                            <button
-                                onClick={() => router.push("/team")}
-                                className="group cursor-pointer rounded-full border border-[#6B7AE3] p-2 transition-all duration-300 ease-in-out hover:bg-[#6B7AE3] hover:text-white"
-                            >
-                                <FaChevronLeft className="text-base text-secondary transition-all duration-300 ease-in-out group-hover:text-white" />
-                            </button>
+                    <div className="mb-5 flex flex-col items-center justify-between md:flex-row">
+                        <div>
+                            <div className="mb-2 flex items-center gap-4">
+                                <button
+                                    onClick={() => router.push("/projects")}
+                                    className="group cursor-pointer rounded-full border border-[#6B7AE3] p-2 transition-all duration-300 ease-in-out hover:bg-[#6B7AE3] hover:text-white"
+                                >
+                                    <FaChevronLeft className="text-base text-secondary transition-all duration-300 ease-in-out group-hover:text-white" />
+                                </button>
 
-                            <Header message={apiProject?.data.name ?? "Dummy Project"} />
+                                <Header message={apiProject?.data.name ?? "Dummy Project"} />
+                            </div>
+                            <p className="text-sm font-normal text-[#797979]">{apiProject?.data.id}</p>
                         </div>
-                        <p className="text-sm font-normal text-[#797979]">{apiProject?.data.id}</p>
+
+                        <Button label="Update Project" variant="outlined" onClick={() => setUpdateProject(true)} />
                     </div>
 
                     <div className="my-8 grid  grid-cols-4 items-center justify-between gap-y-8 md:w-[100%]">
@@ -99,7 +105,17 @@ const Project = ({ params }: { params: Promise<{ id: string }> }) => {
 
                         <div>
                             <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Status</h5>
-                            <p className="text-sm font-normal capitalize text-[#797979]">{apiProject?.data.status}</p>
+                            <p
+                                className={`text-sm font-medium uppercase ${
+                                    apiProject?.data.status === "completed"
+                                        ? "text-green-500"
+                                        : apiProject?.data.status === "pending"
+                                          ? "text-yellow-500"
+                                          : "text-[#37449F]"
+                                }`}
+                            >
+                                {apiProject?.data.status}
+                            </p>
                         </div>
                     </div>
                 </main>
@@ -115,7 +131,6 @@ const Project = ({ params }: { params: Promise<{ id: string }> }) => {
                         <Search conditionKeyword="fullName" initialState={projectUsers} setState={setProjectUsers} resetState={[]} />
                     </div>
                 </TabList>
-
 
                 <TabPanel>
                     <GenericTableWrapper
@@ -138,6 +153,15 @@ const Project = ({ params }: { params: Promise<{ id: string }> }) => {
                     </GenericTableWrapper>
                 </TabPanel>
             </Tabs>
+
+            <CreateProjectSideDrawer
+                drawerTrigger={updateProject}
+                project={apiProject?.data}
+                handleClose={() => {
+                    setUpdateProject(false);
+                    refetch();
+                }}
+            />
         </>
     );
 };

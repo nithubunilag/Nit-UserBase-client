@@ -11,7 +11,6 @@ export const ResetPasswordModal = (props: IBaseModalProps) => {
             <div className=" px-8 py-10">
                 <h2 className="text-secondary text-center text-3xl font-bold">Password Reset Successful!</h2>
 
-                <Image src={`${IMAGE_DIR}/modal_image.png`} className="mx-auto my-8" alt="Modal Image" width={100} height={100} priority />
                 <p className="mx-auto mb-5 text-center text-lg font-light text-[#4B4E61] md:w-[80%]">
                     Congratulations! Your password has been reset successfully
                 </p>

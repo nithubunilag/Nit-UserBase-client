@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee QR Scanner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h1 class="text-2xl font-bold mb-6 text-center">Employee QR Scanner</h1>
+        
+        <div id="input-section">
+            <div class="mb-4">
+                <label for="employee-id" class="block text-sm font-medium text-gray-700 mb-2">Employee ID</label>
+                <input type="text" id="employee-id" name="employee-id" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter Employee ID">
+            </div>
+            <button id="submit-btn" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Submit</button>
+        </div>
+
+        <div id="scanner-section" class="hidden mt-6">
+            <div id="qr-reader" class="w-full"></div>
+            <button id="back-btn" class="mt-4 w-full bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Back to Input</button>
+        </div>
+    </div>
+
+    <script>
+        const inputSection = document.getElementById('input-section');
+        const scannerSection = document.getElementById('scanner-section');
+        const submitBtn = document.getElementById('submit-btn');
+        const backBtn = document.getElementById('back-btn');
+        const employeeIdInput = document.getElementById('employee-id');
+
+        submitBtn.addEventListener('click', () => {
+            inputSection.classList.add('hidden');
+            scannerSection.classList.remove('hidden');
+            initializeScanner();
+        });
+
+        backBtn.addEventListener('click', () => {
+            scannerSection.classList.add('hidden');
+            inputSection.classList.remove('hidden');
+            if (html5QrCode) {
+                html5QrCode.stop();
+            }
+        });
+
+        let html5QrCode;
+
+        function initializeScanner() {
+            html5QrCode = new Html5Qrcode("qr-reader");
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+            html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess)
+                .catch((err) => {
+                    console.error("Error starting scanner:", err);
+                });
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            console.log(`QR Code detected: ${decodedText}`, decodedResult);
+            html5QrCode.stop();
+            alert(`QR Code scanned: ${decodedText}`);
+            scannerSection.classList.add('hidden');
+            inputSection.classList.remove('hidden');
+            employeeIdInput.value = decodedText;
+        }
+    </script>
+</body>
+</html>

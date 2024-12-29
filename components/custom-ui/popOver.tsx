@@ -36,7 +36,8 @@ export const PopOver = ({
         }
     };
 
-    const handleClick = () => {
+    const handleClick = (e: any) => {
+        e && e.stopPropagation();
         if (trigger !== "click") return;
 
         setShow(!show);

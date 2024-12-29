@@ -8,6 +8,8 @@ import { makeToast } from "@/libs/react-toast";
 import { RefreshIcon } from "@/public/icons";
 import { userService } from "@/services/users/user.service";
 import { EmploymentTimeline } from "@/services/users/users.interface";
+import { getAsset } from "@/utils/getAsset";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useMemo, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
@@ -52,7 +54,7 @@ const User = ({ params }: { params: Promise<{ id: string }> }) => {
     const [employmentTimelines, setEmploymentTimelines] = useState<EmploymentTimeline[]>([]);
 
     useEffect(() => {
-        setProjects(apiUser?.data.user.projects ?? []);
+        setProjects(apiUser?.data.user?.projects ?? []);
         setEmploymentTimelines(apiUser?.data.employmentTimeline ?? []);
     }, [apiUser?.data]);
 
@@ -70,102 +72,122 @@ const User = ({ params }: { params: Promise<{ id: string }> }) => {
                         <div className="h-4 w-32 animate-pulse rounded bg-gray-200" />
                     </div>
 
-                    <div className="my-8 grid grid-cols-4 items-center justify-between gap-y-8 md:w-[100%]">
-                        {Array.from({ length: 14 }).map((_, index) => (
-                            <div key={index}>
-                                <div className="mb-2 h-4 w-24 animate-pulse rounded bg-gray-200" />
-                                <div className="h-4 w-32 animate-pulse rounded bg-gray-200" />
-                            </div>
-                        ))}
+                    <div className="mb-10 flex items-center justify-between gap-5">
+                        <div className="my-8 grid grid-cols-4 items-center justify-between gap-y-8 md:w-[70%]">
+                            {Array.from({ length: 14 }).map((_, index) => (
+                                <div key={index}>
+                                    <div className="mb-2 h-4 w-24 animate-pulse rounded bg-gray-200" />
+                                    <div className="h-4 w-32 animate-pulse rounded bg-gray-200" />
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="h-[400px] w-[30%] animate-pulse rounded-lg bg-gray-200 shadow-lg"></div>
                     </div>
                 </main>
             )}
 
             {!fetchingUser && (
                 <main className="animate-fade-in">
-                    <div>
-                        <div className="mb-2 flex items-center gap-4">
-                            <button
-                                onClick={() => router.push("/team")}
-                                className="group cursor-pointer rounded-full border border-[#6B7AE3] p-2 transition-all duration-300 ease-in-out hover:bg-[#6B7AE3] hover:text-white"
-                            >
-                                <FaChevronLeft className="text-base text-secondary transition-all duration-300 ease-in-out group-hover:text-white" />
-                            </button>
-
-                            <Header message={apiUser?.data.user.fullName ?? "Personal Details"} />
-                        </div>
-                        <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.id}</p>
-                    </div>
-
-                    <div className="my-8 grid  grid-cols-4 items-center justify-between gap-y-8 md:w-[100%]">
+                    <div className="mb-5 flex flex-col items-center justify-between md:flex-row">
                         <div>
-                            <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">ID</h5>
+                            <div className="mb-2 flex items-center gap-4">
+                                <button
+                                    onClick={() => router.push("/team")}
+                                    className="group cursor-pointer rounded-full border border-[#6B7AE3] p-2 transition-all duration-300 ease-in-out hover:bg-[#6B7AE3] hover:text-white"
+                                >
+                                    <FaChevronLeft className="text-base text-secondary transition-all duration-300 ease-in-out group-hover:text-white" />
+                                </button>
+
+                                <Header message={apiUser?.data.user.fullName ?? "Personal Details"} />
+                            </div>
                             <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.id}</p>
                         </div>
 
-                        <div>
-                            <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">User name</h5>
-                            <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.fullName}</p>
+                        <Button label="Update User" variant="outlined" />
+                    </div>
+
+                    <div className="mb-10 flex items-center justify-between gap-5">
+                        <div className="my-8 grid grid-cols-4 items-center justify-between gap-y-8 md:w-[70%] ">
+                            <div>
+                                <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">ID</h5>
+                                <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.id}</p>
+                            </div>
+
+                            <div>
+                                <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">User name</h5>
+                                <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.fullName}</p>
+                            </div>
+
+                            <div>
+                                <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Email Address</h5>
+                                <p className="ttext-[#797979] text-sm font-normal">{apiUser?.data.user.emailAddress}</p>
+                            </div>
+
+                            <div>
+                                <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Gender</h5>
+                                <p className="text-sm font-normal capitalize text-[#797979]">{apiUser?.data.user.gender}</p>
+                            </div>
+
+                            <div>
+                                <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Role</h5>
+                                <p className="text-sm font-normal capitalize text-[#797979]">{apiUser?.data.user.role?.name}</p>
+                            </div>
+
+                            <div>
+                                <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Department</h5>
+                                <p className="text-sm font-normal capitalize text-[#797979]">{apiUser?.data.user.department?.name}</p>
+                            </div>
+
+                            <div>
+                                <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Created At</h5>
+                                <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.createdAt}</p>
+                            </div>
+
+                            <div>
+                                <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Current Address</h5>
+                                <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.currentAddress}</p>
+                            </div>
+
+                            <div>
+                                <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Date of Birth</h5>
+                                <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.dateOfBirth}</p>
+                            </div>
+
+                            <div>
+                                <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Education Level</h5>
+                                <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.educationLevel}</p>
+                            </div>
+
+                            <div>
+                                <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Emergency Contact</h5>
+                                <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.emergencyContact}</p>
+                            </div>
+
+                            <div>
+                                <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">LinkedIn Profile</h5>
+                                <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.linkedinProfile}</p>
+                            </div>
+
+                            <div>
+                                <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Permanent Address</h5>
+                                <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.permanentAddress}</p>
+                            </div>
+
+                            <div>
+                                <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Phone Number</h5>
+                                <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.phoneNumber}</p>
+                            </div>
                         </div>
 
-                        <div>
-                            <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Email Address</h5>
-                            <p className="ttext-[#797979] text-sm font-normal">{apiUser?.data.user.emailAddress}</p>
-                        </div>
-
-                        <div>
-                            <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Gender</h5>
-                            <p className="text-sm font-normal capitalize text-[#797979]">{apiUser?.data.user.gender}</p>
-                        </div>
-
-                        <div>
-                            <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Role</h5>
-                            <p className="text-sm font-normal capitalize text-[#797979]">{apiUser?.data.user.role?.name}</p>
-                        </div>
-
-                        <div>
-                            <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Department</h5>
-                            <p className="text-sm font-normal capitalize text-[#797979]">{apiUser?.data.user.department?.name}</p>
-                        </div>
-
-                        <div>
-                            <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Created At</h5>
-                            <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.createdAt}</p>
-                        </div>
-
-                        <div>
-                            <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Current Address</h5>
-                            <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.currentAddress}</p>
-                        </div>
-
-                        <div>
-                            <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Date of Birth</h5>
-                            <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.dateOfBirth}</p>
-                        </div>
-
-                        <div>
-                            <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Education Level</h5>
-                            <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.educationLevel}</p>
-                        </div>
-
-                        <div>
-                            <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Emergency Contact</h5>
-                            <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.emergencyContact}</p>
-                        </div>
-
-                        <div>
-                            <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">LinkedIn Profile</h5>
-                            <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.linkedinProfile}</p>
-                        </div>
-
-                        <div>
-                            <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Permanent Address</h5>
-                            <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.permanentAddress}</p>
-                        </div>
-
-                        <div>
-                            <h5 className="mb-2 text-sm font-medium text-[#6B7AE3]">Phone Number</h5>
-                            <p className="text-sm font-normal text-[#797979]">{apiUser?.data.user.phoneNumber}</p>
+                        <div className="h-[400px] w-[30%] overflow-hidden rounded-lg shadow-lg">
+                            <Image
+                                src={getAsset("dummyAvatar.png", "images")}
+                                alt="dummy Avatar"
+                                width={100}
+                                height={100}
+                                className="h-full w-full object-cover "
+                            />
                         </div>
                     </div>
                 </main>
@@ -177,6 +199,7 @@ const User = ({ params }: { params: Promise<{ id: string }> }) => {
                         <Tab onClick={() => setCurrentTab("projects")}>Projects</Tab>
                         <Tab onClick={() => setCurrentTab("timeline")}>Timeline</Tab>
                         <Tab onClick={() => setCurrentTab("attendance")}>Attendance</Tab>
+                        <Tab onClick={() => setCurrentTab("attendance")}>Assignees</Tab>
                     </div>
 
                     <div className="flex gap-4">
@@ -189,6 +212,7 @@ const User = ({ params }: { params: Promise<{ id: string }> }) => {
                         {currentTab === "projects" && (
                             <Button variant="contained" disabled={fetchingUser} label="Assign Project" onClick={() => setAssignProjectModal(true)} />
                         )}
+                        <Button variant="contained" disabled={fetchingUser} label="Generate User OTP" />
                     </div>
                 </TabList>
 
@@ -260,11 +284,29 @@ const User = ({ params }: { params: Promise<{ id: string }> }) => {
                         )}
                     </GenericTableWrapper>
                 </TabPanel>
+
+                <TabPanel>
+                    <GenericTableWrapper
+                        skeletonRows={5}
+                        isLoading={fetchingUser}
+                        data={[]}
+                        tableHead={["Date", "Check In", "Check Out", "Hours at Work"]}
+                    >
+                        {(item) => (
+                            <>
+                                <Table.Cell>sd</Table.Cell>
+                            </>
+                        )}
+                    </GenericTableWrapper>
+                </TabPanel>
             </Tabs>
 
             <AssignProjectsToUserSideDrawer
                 drawerTrigger={assignProjectModal}
-                handleClose={() => setAssignProjectModal(false)}
+                handleClose={() => {
+                    setAssignProjectModal(false);
+                    fetchUser();
+                }}
                 userId={id}
                 projects={projects}
             />

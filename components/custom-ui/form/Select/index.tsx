@@ -13,6 +13,7 @@ type ISelectProps = {
     onItemClick?: (data: IDropdownItem) => void;
     placeHolder?: string;
     initialValue?: IDropdownItem;
+    borderClass?: string;
 } & SelectHTMLAttributes<HTMLSelectElement>;
 
 export const Select = (props: ISelectProps) => {
@@ -107,7 +108,9 @@ export const Select = (props: ISelectProps) => {
                 {others.required ? <p className={`text-sm leading-none text-[#EF233C] md:text-base`}>*</p> : null}
             </span>
 
-            <div className="flex flex-row gap-x-2  rounded-[4px] border border-solid border-transparent bg-white duration-200 ease-in focus-within:border-primary">
+            <div
+                className={`flex flex-row gap-x-2 rounded-[4px] border border-solid ${props.borderClass ? props.borderClass : "border-transparent"} bg-white duration-200 ease-in focus-within:border-primary`}
+            >
                 <input type="checkbox" className="dropdown__switch" id={name} ref={toggleRef} hidden />
                 <label htmlFor={name} className="dropdown__options-filter w-full cursor-pointer">
                     <ul

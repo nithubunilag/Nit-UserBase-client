@@ -15,6 +15,7 @@ interface GenericTableWrapperProps<T> {
     skeletonRows?: number;
     initialSelectedItems?: T[];
     onSelectionChange?: (selectedItems: T[]) => void;
+    isRowDisabled?: (item: T) => boolean;
 }
 
 const TableRowSkeleton = ({ columns, showCheckbox }: { columns: number; showCheckbox?: boolean }) => (
@@ -36,8 +37,19 @@ const TableRowSkeleton = ({ columns, showCheckbox }: { columns: number; showChec
 );
 
 export const GenericTableWrapper = <T,>(props: GenericTableWrapperProps<T>) => {
-    const { data, tableHead, showCheckbox, children, onRowClick, emptyState, isLoading, skeletonRows, onSelectionChange, initialSelectedItems } =
-        props;
+    const {
+        data,
+        tableHead,
+        showCheckbox,
+        children,
+        onRowClick,
+        emptyState,
+        isLoading,
+        skeletonRows,
+        onSelectionChange,
+        initialSelectedItems,
+        isRowDisabled,
+    } = props;
     const { currentItems, currentPage, nextPage, prevPage, totalPages, goToPage, totalDataLength } = usePagination(data, 8);
     const [selectedItems, setSelectedItems] = useState<T[]>(initialSelectedItems ?? []);
 
@@ -68,20 +80,19 @@ export const GenericTableWrapper = <T,>(props: GenericTableWrapperProps<T>) => {
         }
 
         return currentItems?.map((item, index) => {
-            selectedItems.some((selectedItem) => {
-                console.log({ selectedItem, item });
-            });
-            console.log("Hello", selectedItems, item);
+            const disabled = isRowDisabled ? isRowDisabled(item) : false;
+
             return (
                 <Table.Row
                     key={index}
-                    onClick={() => onRowClick && onRowClick(item)}
-                    className="animate-fade-in !cursor-pointer border-l-[4px] border-transparent transition-all duration-300 ease-in-out hover:border-l-[#232e7d] hover:!bg-[#ebebeb]"
+                    onClick={() => !disabled && onRowClick && onRowClick(item)}
+                    className={`animate-fade-in  border-l-[4px] border-transparent transition-all duration-300 ease-in-out  ${disabled ? "cursor-auto opacity-35" : "!cursor-pointer hover:border-l-[#232e7d] hover:!bg-[#ebebeb]"}`}
                 >
                     {showCheckbox && (
                         <Table.Cell nonCapitalize className="w-[10px]">
                             <label className="flex items-center space-x-2">
                                 <input
+                                    disabled={disabled}
                                     type="checkbox"
                                     checked={selectedItems.some((selectedItem) => JSON.stringify(selectedItem) === JSON.stringify(item))}
                                     onChange={(e) => {
